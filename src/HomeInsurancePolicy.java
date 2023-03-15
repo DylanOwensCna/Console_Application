@@ -6,6 +6,22 @@ public class HomeInsurancePolicy {
 
         System.out.println("Welcome to the Home Quote Application!");
 
+        System.out.print("Enter home value: ");
+        int homeValue = scanner.nextInt();
+
+
+        double basePremium;
+
+        if (homeValue <= 150000) {
+            basePremium = 500;
+        } else if (homeValue > 150000 && homeValue <= 200000) {
+            basePremium = 600;
+        } else if (homeValue > 200000 && homeValue <= 250000) {
+            basePremium = 700;
+        } else {
+            basePremium = 800;
+        }
+
         System.out.print("Enter home age: ");
         int homeAge = scanner.nextInt();
 
@@ -24,7 +40,7 @@ public class HomeInsurancePolicy {
         System.out.println("4. Semi-attached");
         int dwellingType = scanner.nextInt();
 
-        double basePremium = 500.0;
+
         double ageFactor = getAgeFactor(homeAge);
         double heatingTypeFactor = getHeatingTypeFactor(heatingType);
         double dwellingTypeFactor = getDwellingTypeFactor(dwellingType);
@@ -34,6 +50,8 @@ public class HomeInsurancePolicy {
         System.out.println("Coverage Type: Home");
         System.out.println("Base Premium: $" + basePremium);
         System.out.println("Premium Amount: $" + premiumAmount);
+
+        ApplicationMenu.printMenu();
     }
 
     private static double getAgeFactor(int homeAge) {
@@ -76,4 +94,5 @@ public class HomeInsurancePolicy {
                 throw new IllegalArgumentException("Invalid dwelling type");
         }
     }
+
 }
