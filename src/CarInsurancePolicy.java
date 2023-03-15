@@ -3,10 +3,15 @@ import java.util.Scanner;
 public class CarInsurancePolicy {
 
     public static void main() {
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Car Quote Application!");
 
         // Get input from user
+
+        System.out.print("Enter the blue book value of your car: ");
+        int carValue = scanner.nextInt();
+
         System.out.print("Enter number of accidents in the last 5 years: ");
         int accidents = scanner.nextInt();
 
@@ -16,8 +21,19 @@ public class CarInsurancePolicy {
         System.out.print("Enter location (1 for Dense Urban, 2 for Urban, 3 for Rural): ");
         int location = scanner.nextInt();
 
+        int basePremium;
+
         // Calculate premium
-        int basePremium = 750;
+        if (carValue <= 55000) {
+            basePremium = 750;
+        } else if (carValue > 55000 && carValue <= 75000) {
+            basePremium = 900;
+        } else if (carValue > 75000 && carValue <= 95000) {
+            basePremium = 1200;
+        } else {
+            basePremium = 1500;
+        }
+
         double ageFactor = 1.0;
         double accidentFactor = 1.0;
         double locationFactor = 1.0;
@@ -54,5 +70,13 @@ public class CarInsurancePolicy {
 
         // Display premium to user
         System.out.println("Your premium is: $" + premium);
+
+        ApplicationMenu.printMenu();
+
+
     }
+
+
+
+
 }
