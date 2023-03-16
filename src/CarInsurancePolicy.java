@@ -1,9 +1,12 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CarInsurancePolicy {
 
     public static void main() throws SQLException {
+        Connection connection = DBConnection.getDBConnection();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Car Quote Application!");
@@ -51,9 +54,11 @@ public class CarInsurancePolicy {
         // Apply accident factor
         if (accidents == 0) {
             accidentFactor = 1.00;
-        } if (accidents == 1) {
+        }
+        if (accidents == 1) {
             accidentFactor = 1.25;
-        } if (accidents == 2) {
+        }
+        if (accidents == 2) {
             accidentFactor = 2.50;
         }
 
@@ -71,13 +76,31 @@ public class CarInsurancePolicy {
 
         // Display premium to user
         System.out.println("Your premium is: $" + premium);
+// Create SQL insert statement
+        String sql = "INSERT INTO AutoPolicyQuotes (policyCarValue, " +
+                "policyAccidentTotal, policyDriverAge, " +
+                "policyLocation," +
+                "quoteTotal) VALUES (?, ?, ?, ?, ?)";
 
+        // Prepare statement with user input
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setDouble(1, carValue);
+        statement.setInt(2, accidents);
+        statement.setInt(3, driverAge);
+        statement.setInt(4, location);
+        statement.setDouble(5, premium);
+        statement.executeUpdate();
+        // Execute insert statement
+        int rowsInserted = statement.executeUpdate();
+        if (rowsInserted > -1) {
+            System.out.println("A new policy quote has been added to the AutoPolicyQuotes table.\n");
+        }
+
+        // Close resources
+        statement.close();
+        connection.close();
         ApplicationMenu.printMenu();
 
-
     }
-
-
-
-
 }
+
