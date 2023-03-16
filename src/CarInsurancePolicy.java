@@ -89,7 +89,6 @@ public class CarInsurancePolicy {
         statement.setInt(3, driverAge);
         statement.setInt(4, location);
         statement.setDouble(5, premium);
-        statement.executeUpdate();
         // Execute insert statement
         int rowsInserted = statement.executeUpdate();
         if (rowsInserted > -1) {

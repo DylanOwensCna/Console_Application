@@ -67,7 +67,6 @@ public class HomeInsurancePolicy {
         statement.setInt(2, homeAge);
         statement.setInt(3, heatingType);
         statement.setDouble(4, premiumAmount);
-        statement.executeUpdate();
         // Execute insert statement
         int rowsInserted = statement.executeUpdate();
         if (rowsInserted > -1) {
