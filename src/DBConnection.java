@@ -15,7 +15,7 @@ public class DBConnection {
             /**
              * register the driver
              */
-                doClassForNameRegistration();
+//                doClassForNameRegistration();
                 Connection connection = DriverManager.getConnection(
                         DB_URL,
                         DB_USER,
@@ -40,7 +40,6 @@ public class DBConnection {
                     "policyHomeValue DECIMAL(10,2) NOT NULL," +
                     "policyHomeAge INT NOT NULL," +
                     "policyHeatingType INT NOT NULL," +
-                    "propertyValue DECIMAL(10,2) NOT NULL," +
                     "quoteTotal DECIMAL(10,2) NOT NULL," +
                     "PRIMARY KEY (quoteId)" +
                     ");";
@@ -55,17 +54,27 @@ public class DBConnection {
             e.printStackTrace();
         }
     }
-
-
-    public static void doClassForNameRegistration() {
-        final String driverName = MARIA_DB_DRIVER_NAME;
+    public static Connection getDBConnection(){
+        Connection connection = null;
         try {
-            Class.forName(driverName);
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Error: unable to load MariaDB driver class!");
-            System.out.printf("Driver Name: ", driverName);
-            System.exit(1);
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
+        return connection;
     }
 }
+
+//    public static void doClassForNameRegistration() {
+//        final String driverName = MARIA_DB_DRIVER_NAME;
+//        try {
+//            Class.forName(driverName);
+//        } catch (ClassNotFoundException ex) {
+//            System.out.println("Error: unable to load MariaDB driver class!");
+//            System.out.printf("Driver Name: ", driverName);
+//            System.exit(1);
+//        }
+//    }
+//}
 

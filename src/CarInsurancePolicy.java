@@ -1,8 +1,9 @@
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CarInsurancePolicy {
 
-    public static void main() {
+    public static void main() throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Car Quote Application!");

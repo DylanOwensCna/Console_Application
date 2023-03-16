@@ -1,10 +1,15 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class HomeInsurancePolicy {
-    public static void main() {
+    public static void main() throws SQLException {
+        Connection connection = DBConnection.getDBConnection();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to the Home Quote Application!");
+
 
         System.out.print("Enter home value: ");
         int homeValue = scanner.nextInt();
@@ -40,7 +45,7 @@ public class HomeInsurancePolicy {
         System.out.println("4. Semi-attached");
         int dwellingType = scanner.nextInt();
 
-
+        int homeID = 0;
         double ageFactor = getAgeFactor(homeAge);
         double heatingTypeFactor = getHeatingTypeFactor(heatingType);
         double dwellingTypeFactor = getDwellingTypeFactor(dwellingType);
@@ -52,7 +57,35 @@ public class HomeInsurancePolicy {
         System.out.println("Premium Amount: $" + premiumAmount);
 
         ApplicationMenu.printMenu();
+
+        // Create SQL insert statement
+        String sql = "INSERT INTO HomePolicyQuotes (quoteId, policyHomeValue, " +
+                "policyHomeAge, policyHeatingType, " +
+                "quoteTotal, VALUES (?, ?, ?, ?, ?)";
+
+        // Prepare statement with user input
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setDouble(1, homeID);
+        statement.setDouble(2, homeValue);
+        statement.setDouble(3, homeAge);
+        statement.setDouble(4, heatingType);
+        statement.setDouble(5, premiumAmount);
+
+
+        // Execute insert statement
+        int rowsInserted = statement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("A new policy quote has been added to the HomePolicyQuotes table.");
+        }
+
+        // Close resources
+        statement.close();
+        connection.close();
+
     }
+
+
+
 
     private static double getAgeFactor(int homeAge) {
         if (homeAge < 25) {
@@ -63,6 +96,7 @@ public class HomeInsurancePolicy {
             return 1.5;
         }
     }
+
     private static double getHeatingTypeFactor(int heatingType) {
         switch (heatingType) {
             case 1:
@@ -94,5 +128,5 @@ public class HomeInsurancePolicy {
                 throw new IllegalArgumentException("Invalid dwelling type");
         }
     }
-
 }
+

@@ -1,7 +1,8 @@
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ApplicationMenu {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
 
         printMenu();
@@ -16,7 +17,7 @@ public class ApplicationMenu {
 
     }
 
-    public static void printMenu() {
+    public static void printMenu() throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
 
