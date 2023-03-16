@@ -12,7 +12,7 @@ public class HomeInsurancePolicy {
 
 
         System.out.print("Enter home value: ");
-        int homeValue = scanner.nextInt();
+        double homeValue = scanner.nextDouble();
 
 
         double basePremium;
@@ -45,7 +45,6 @@ public class HomeInsurancePolicy {
         System.out.println("4. Semi-attached");
         int dwellingType = scanner.nextInt();
 
-        int homeID = 0;
         double ageFactor = getAgeFactor(homeAge);
         double heatingTypeFactor = getHeatingTypeFactor(heatingType);
         double dwellingTypeFactor = getDwellingTypeFactor(dwellingType);
@@ -56,36 +55,31 @@ public class HomeInsurancePolicy {
         System.out.println("Base Premium: $" + basePremium);
         System.out.println("Premium Amount: $" + premiumAmount);
 
-        ApplicationMenu.printMenu();
 
         // Create SQL insert statement
-        String sql = "INSERT INTO HomePolicyQuotes (quoteId, policyHomeValue, " +
+        String sql = "INSERT INTO HomePolicyQuotes (policyHomeValue, " +
                 "policyHomeAge, policyHeatingType, " +
-                "quoteTotal, VALUES (?, ?, ?, ?, ?)";
+                "quoteTotal) VALUES (?, ?, ?, ?)";
 
         // Prepare statement with user input
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setDouble(1, homeID);
-        statement.setDouble(2, homeValue);
-        statement.setDouble(3, homeAge);
-        statement.setDouble(4, heatingType);
-        statement.setDouble(5, premiumAmount);
-
-
+        statement.setDouble(1, homeValue);
+        statement.setInt(2, homeAge);
+        statement.setInt(3, heatingType);
+        statement.setDouble(4, premiumAmount);
+        statement.executeUpdate();
         // Execute insert statement
         int rowsInserted = statement.executeUpdate();
-        if (rowsInserted > 0) {
-            System.out.println("A new policy quote has been added to the HomePolicyQuotes table.");
+        if (rowsInserted > -1) {
+            System.out.println("A new policy quote has been added to the HomePolicyQuotes table.\n");
         }
 
         // Close resources
         statement.close();
         connection.close();
+        ApplicationMenu.printMenu();
 
     }
-
-
-
 
     private static double getAgeFactor(int homeAge) {
         if (homeAge < 25) {
